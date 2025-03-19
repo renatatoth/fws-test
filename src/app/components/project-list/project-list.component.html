@@ -1,5 +1,5 @@
-<div class="w-100 mx-auto border border-gray-300 p-4 rounded-md">
-  <table class="table-auto w-100 mx-0 text-left">
+<section class="container">
+  <table class="table">
     <thead>
       <tr>
         <th>#</th>
@@ -10,17 +10,14 @@
     </thead>
     <tbody>
       <tr *ngFor="let project of projects$ | async; index as i">
-        <td class="fw-bold">{{ i + 1 }}</td>
+        <td class="">{{ i + 1 }}</td>
         <td>{{ project.name }}</td>
-        <td>{{ project.status }}</td>
+        <td>{{ project.status | titlecase }}</td>
         <td>
-          <button
-            class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded cursor-pointer"
-          >
-            Szerkesztés
-          </button>
+          <button class="btn btn-warning me-3">Szerkesztés</button>
+          <button class="btn btn-danger">Törlés</button>
         </td>
       </tr>
     </tbody>
   </table>
-</div>
+</section>
