@@ -1,1 +1,26 @@
-<p>project-list works!</p>
+<div class="w-100 mx-auto border border-gray-300 p-4 rounded-md">
+  <table class="table-auto w-100 mx-0 text-left">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Név</th>
+        <th>Státusz</th>
+        <th>Opciók</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects$ | async; index as i">
+        <td class="fw-bold">{{ i + 1 }}</td>
+        <td>{{ project.name }}</td>
+        <td>{{ project.status }}</td>
+        <td>
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white py-1 px-2 rounded cursor-pointer"
+          >
+            Szerkesztés
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
