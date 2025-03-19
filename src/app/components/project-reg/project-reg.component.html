@@ -1,5 +1,7 @@
 <section class="w-75 mx-auto my-5">
-  <h2>{{ projectId ? "Projekt szerkesztése" : "Új projekt hozzáadása" }}</h2>
+  <h2 class="mb-3">
+    {{ projectId ? "Projekt szerkesztése" : "Új projekt hozzáadása" }}
+  </h2>
   <form [formGroup]="projectForm" (ngSubmit)="submitForm()">
     <div class="mb-3">
       <label for="name" class="form-label">Név</label>
@@ -43,7 +45,7 @@
     <div formArrayName="contacts" class="row my-3">
       <ng-container *ngFor="let contact of contacts.controls; let i = index">
         <div [formGroupName]="i" class="row mb-3">
-          <div class="col-4 mb-3">
+          <div class="col-4 mb-2">
             <input
               type="text"
               class="form-control"
@@ -51,15 +53,15 @@
               formControlName="contactName"
             />
           </div>
-          <div class="col-4 mb-3">
+          <div class="col-4 mb-2">
             <input
-              type="text"
+              type="email"
               class="form-control"
               placeholder="Email"
               formControlName="contactEmail"
             />
           </div>
-          <div class="col-2 mb-3">
+          <div class="col-2 mb-2">
             <button
               type="button"
               class="btn btn-danger btn-sm"

@@ -1,5 +1,5 @@
 <section class="container">
-  <table class="table">
+  <table class="table my-5">
     <thead>
       <tr>
         <th>#</th>
@@ -14,7 +14,7 @@
         <td class="">{{ i + 1 }}</td>
         <td>{{ project.name }}</td>
         <td>{{ project.status | titlecase }}</td>
-        <td>{{ project.contacts?.length }}</td>
+        <td>{{ project.contacts?.length ?? 0 }}</td>
         <td>
           <button
             class="btn btn-warning me-3"
