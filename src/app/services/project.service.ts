@@ -2,9 +2,13 @@ import { Injectable } from '@angular/core';
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
+  docData,
   DocumentData,
   Firestore,
   getDocs,
+  setDoc,
 } from '@angular/fire/firestore';
 import { from, map, Observable } from 'rxjs';
 import { Project } from '../models/Project.model';
@@ -34,5 +38,20 @@ export class ProjectService {
         return resultList;
       })
     );
+  }
+
+  getProject(projectId: string): Observable<Project> {
+    const projectDoc = doc(this.firestore, `projects/${projectId}`);
+    return docData(projectDoc, { idField: 'id' }) as Observable<Project>;
+  }
+
+  updateProject(project: Project): Observable<void> {
+    const projectDoc = doc(this.firestore, `projects/${project.id}`);
+    return from(setDoc(projectDoc, project));
+  }
+
+  deleteProject(projectId: string): Observable<void> {
+    const projectDoc = doc(this.firestore, `projects/${projectId}`);
+    return from(deleteDoc(projectDoc));
   }
 }

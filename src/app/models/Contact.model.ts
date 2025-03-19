@@ -1,4 +1,4 @@
 export interface Contact {
-  name: string;
-  email: string;
+  contactName: string;
+  contactEmail: string;
 }

@@ -1,6 +1,6 @@
 <section class="w-75 mx-auto my-5">
-  <h1>Projekt hozzáadása</h1>
-  <form [formGroup]="projectForm" (ngSubmit)="createProject()">
+  <h2>{{ projectId ? "Projekt szerkesztése" : "Új projekt hozzáadása" }}</h2>
+  <form [formGroup]="projectForm" (ngSubmit)="submitForm()">
     <div class="mb-3">
       <label for="name" class="form-label">Név</label>
       <input
@@ -81,7 +81,13 @@
       </div>
     </div>
     <div class="row my-5">
-      <button type="submit" class="btn btn-success w-25 mx-auto">Küldés</button>
+      <button
+        type="submit"
+        class="btn btn-success w-25 mx-auto"
+        [disabled]="projectForm.invalid"
+      >
+        Küldés
+      </button>
     </div>
   </form>
 </section>

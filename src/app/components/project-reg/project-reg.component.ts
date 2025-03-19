@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { Project } from '../../models/Project.model';
 import { Status } from '../../models/Status.model';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-reg',
@@ -20,11 +21,24 @@ import { Status } from '../../models/Status.model';
 export class ProjectRegComponent implements OnInit, OnDestroy {
   projectForm!: FormGroup;
   subSaveProject?: Subscription;
+  subRoute?: Subscription;
   Status = Status;
+  projectId: string | null = null;
 
-  constructor(private projectService: ProjectService) {}
+  constructor(
+    private projectService: ProjectService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
+    this.subRoute = this.activatedRoute.params.subscribe((params) => {
+      this.projectId = params['projectId'];
+      if (this.projectId) {
+        this.loadProject(this.projectId);
+      }
+    });
+
     this.projectForm = new FormGroup({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -35,31 +49,73 @@ export class ProjectRegComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.subSaveProject?.unsubscribe();
+    this.subRoute?.unsubscribe();
   }
 
-  createProject(): void {
-    console.log(this.projectForm.value);
-
+  submitForm(): void {
     if (this.projectForm.valid) {
       const project: Project = this.projectForm.value;
-      this.subSaveProject = this.projectService
-        .createProject(project)
-        .subscribe({
-          next: () => {
-            console.log('Project created');
-          },
-          error: (err) => {
-            console.log(err);
-          },
-        });
-      this.projectForm.reset();
+
+      if (this.projectId) {
+        project.id = this.projectId;
+        this.subSaveProject = this.projectService
+          .updateProject(project)
+          .subscribe({
+            next: () => {
+              console.log('Project updated');
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+      } else {
+        this.subSaveProject = this.projectService
+          .createProject(project)
+          .subscribe({
+            next: () => {
+              console.log('Project created');
+            },
+            error: (err) => {
+              console.log(err);
+            },
+          });
+        this.projectForm.reset();
+      }
     }
+    this.router.navigate(['project-list']);
   }
 
-  createContactGroup(): FormGroup {
+  loadProject(projectId: string): void {
+    this.projectService.getProject(projectId).subscribe({
+      next: (project: Project) => {
+        this.projectForm.patchValue(project);
+        if (project.contacts) {
+          this.projectForm.setControl(
+            'contacts',
+            new FormArray(
+              project.contacts.map((contact) =>
+                this.createContactGroup(
+                  contact.contactName,
+                  contact.contactEmail
+                )
+              )
+            )
+          );
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  createContactGroup(
+    contactName: string = '',
+    contactEmail: string = ''
+  ): FormGroup {
     return new FormGroup({
-      contactName: new FormControl('', Validators.required),
-      contactEmail: new FormControl('', [
+      contactName: new FormControl(contactName, Validators.required),
+      contactEmail: new FormControl(contactEmail, [
         Validators.required,
         Validators.email,
       ]),

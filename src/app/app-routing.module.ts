@@ -6,6 +6,7 @@ import { ProjectListComponent } from './components/project-list/project-list.com
 const routes: Routes = [
   { path: '', redirectTo: '/project-list', pathMatch: 'full' },
   { path: 'project-list', component: ProjectListComponent },
+  { path: 'project-list/edit/:projectId', component: ProjectRegComponent },
   { path: 'project-reg', component: ProjectRegComponent },
 ];
 
