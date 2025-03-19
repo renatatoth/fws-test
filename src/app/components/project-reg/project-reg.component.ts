@@ -132,6 +132,10 @@ export class ProjectRegComponent implements OnInit, OnDestroy {
     (this.projectForm.get('contacts') as FormArray).removeAt(index);
   }
 
+  onReturn(): void {
+    this.router.navigate(['project-list']);
+  }
+
   get name(): AbstractControl | null {
     return this.projectForm.get('name');
   }
