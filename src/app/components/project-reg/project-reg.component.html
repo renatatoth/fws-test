@@ -1,4 +1,5 @@
 <section class="w-75 mx-auto my-5">
+  <h1>Projekt hozzáadása</h1>
   <form [formGroup]="projectForm" (ngSubmit)="createProject()">
     <div class="mb-3">
       <label for="name" class="form-label">Név</label>
@@ -38,12 +39,49 @@
         >Kötelező mező</small
       >
     </div>
-    <button
-      type="submit"
-      class="btn btn-primary"
-      [disabled]="projectForm.invalid"
-    >
-      Küldés
-    </button>
+    <h3 class="mt-5">Kapcsolattartók hozzáadása</h3>
+    <div formArrayName="contacts" class="row my-3">
+      <ng-container *ngFor="let contact of contacts.controls; let i = index">
+        <div [formGroupName]="i" class="row mb-3">
+          <div class="col-4 mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Név"
+              formControlName="contactName"
+            />
+          </div>
+          <div class="col-4 mb-3">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Email"
+              formControlName="contactEmail"
+            />
+          </div>
+          <div class="col-2 mb-3">
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="removeContact(i)"
+            >
+              Törlés
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row mb-3">
+        <button
+          type="button"
+          class="btn btn-sm btn-outline-primary w-auto"
+          (click)="addContact()"
+        >
+          Új kapcsolattartó
+        </button>
+      </div>
+    </div>
+    <div class="row my-5">
+      <button type="submit" class="btn btn-success w-25 mx-auto">Küldés</button>
+    </div>
   </form>
 </section>

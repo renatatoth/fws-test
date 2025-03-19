@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 import { ProjectService } from '../../services/project.service';
 import {
   AbstractControl,
+  FormArray,
   FormControl,
   FormGroup,
   Validators,
@@ -28,6 +29,7 @@ export class ProjectRegComponent implements OnInit, OnDestroy {
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
       status: new FormControl('', Validators.required),
+      contacts: new FormArray([this.createContactGroup()], Validators.required),
     });
   }
 
@@ -54,6 +56,26 @@ export class ProjectRegComponent implements OnInit, OnDestroy {
     }
   }
 
+  createContactGroup(): FormGroup {
+    return new FormGroup({
+      contactName: new FormControl('', Validators.required),
+      contactEmail: new FormControl('', [
+        Validators.required,
+        Validators.email,
+      ]),
+    });
+  }
+
+  addContact(): void {
+    (this.projectForm.get('contacts') as FormArray).push(
+      this.createContactGroup()
+    );
+  }
+
+  removeContact(index: number): void {
+    (this.projectForm.get('contacts') as FormArray).removeAt(index);
+  }
+
   get name(): AbstractControl | null {
     return this.projectForm.get('name');
   }
@@ -64,5 +86,9 @@ export class ProjectRegComponent implements OnInit, OnDestroy {
 
   get status(): AbstractControl | null {
     return this.projectForm.get('status');
+  }
+
+  get contacts(): FormArray {
+    return this.projectForm.get('contacts') as FormArray;
   }
 }
