@@ -6,9 +6,12 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProjectRegComponent } from './components/project-reg/project-reg.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProjectListComponent, ProjectRegComponent, HeaderComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [
     provideFirebaseApp(() =>
